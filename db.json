@@ -1,0 +1,194 @@
+{
+  "users": [
+    {
+      "id": "a627e3fb-c6e6-4de1-8a12-59f2800e191a",
+      "fullname": "User",
+      "email": "user@gmail.com",
+      "password": "$2b$10$m14ujE3hcF9AGhOWKQcpaOmVk.CtzucOGQOMD23r4El57Baj.SzuO",
+      "role": "user"
+    },
+    {
+      "id": "856cf20c-d3bc-4d12-b93d-5063951dd0f0",
+      "fullname": "azamov",
+      "email": "azamov@gmail.com",
+      "password": "$2b$10$el8zgH4hXmFVO3iYNOgukutYR77Vk.kjYHUKzvUInrbvEDD2zUHIi",
+      "role": "user"
+    },
+    {
+      "id": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "fullname": "Admin",
+      "email": "admin@gmail.com",
+      "password": "$2b$10$gsEdPtbIn0rVVe.Nv686ROVQBq168VAWOzUFzbdsYBcT3MlHEmVDe",
+      "role": "admin"
+    },
+    {
+      "id": "6a8cceb5-46b0-4478-b6ad-d191df692cf0",
+      "fullname": "Test",
+      "email": "test@gmail.com",
+      "password": "$2b$10$FwHm7O.La4RTuCi7IwFpcO8UBaJ0fIxyJ.HTyM1PqHksfQCqVh0XW",
+      "role": "user"
+    }
+  ],
+  "messages": [
+    {
+      "id": "03d5aae5-f27b-477a-8b0d-60bdfe8bb7ba",
+      "from": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "to": "856cf20c-d3bc-4d12-b93d-5063951dd0f0",
+      "content": "salom",
+      "fileUrl": null,
+      "timestamp": 1748120566425
+    },
+    {
+      "id": "2f57e9a1-5d26-4ccc-921e-3d7f864bcdd7",
+      "from": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "to": "856cf20c-d3bc-4d12-b93d-5063951dd0f0",
+      "content": "qanday",
+      "fileUrl": null,
+      "timestamp": 1748120571063
+    },
+    {
+      "id": "ac33e00b-5e75-46ad-ad01-0f2cfd1d93ed",
+      "from": "856cf20c-d3bc-4d12-b93d-5063951dd0f0",
+      "to": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "content": "shuni tekshirib bering",
+      "fileUrl": null,
+      "timestamp": 1748120587029
+    },
+    {
+      "id": "7810caf5-2bf7-4ed4-b52c-3730a09e5e14",
+      "from": "856cf20c-d3bc-4d12-b93d-5063951dd0f0",
+      "to": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "content": "Fayl yuborildi",
+      "fileUrl": null,
+      "timestamp": 1748120696374
+    },
+    {
+      "id": "679e42c0-5ec3-4276-ba02-8284b89c534b",
+      "from": "856cf20c-d3bc-4d12-b93d-5063951dd0f0",
+      "to": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "content": "Fayl yuborildi",
+      "fileUrl": "/files/undefined.docx",
+      "timestamp": 1748120891248
+    },
+    {
+      "id": "35ce466b-401d-4499-aa62-8edb7859ecd9",
+      "from": "856cf20c-d3bc-4d12-b93d-5063951dd0f0",
+      "to": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "content": "Fayl yuborildi",
+      "fileUrl": "/files/undefined.jpg",
+      "timestamp": 1748120932144
+    },
+    {
+      "id": "d76b22a1-b3ca-4cf1-b2e2-dc180206ad12",
+      "from": "856cf20c-d3bc-4d12-b93d-5063951dd0f0",
+      "to": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "content": "Fayl yuborildi",
+      "fileUrl": "/files/undefined.png",
+      "timestamp": 1748121110583
+    },
+    {
+      "id": "efa7cb61-fc32-4d24-b808-7b79a8f78bdd",
+      "from": "856cf20c-d3bc-4d12-b93d-5063951dd0f0",
+      "to": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "content": "Fayl yuborildi",
+      "fileUrl": "/files/undefined.png",
+      "timestamp": 1748121122621
+    },
+    {
+      "id": "f8b4ce59-9cd0-42d8-ade2-4d3be020ab2b",
+      "from": "856cf20c-d3bc-4d12-b93d-5063951dd0f0",
+      "to": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "content": "Fayl yuborildi",
+      "fileUrl": "/files/1748121190145-506015178.png",
+      "timestamp": 1748121190164
+    },
+    {
+      "id": "cb0b2da9-2ec9-418c-b4b7-dc4487dd3704",
+      "from": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "to": "856cf20c-d3bc-4d12-b93d-5063951dd0f0",
+      "content": "salom",
+      "fileUrl": null,
+      "timestamp": 1748121219192
+    },
+    {
+      "id": "9590208f-90d8-4549-8a7a-0f20098d0d3c",
+      "from": "856cf20c-d3bc-4d12-b93d-5063951dd0f0",
+      "to": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "content": "mening muammoyim nima bo`ldi",
+      "fileUrl": null,
+      "timestamp": 1748121226998
+    },
+    {
+      "id": "b457b0fe-4b1d-42a6-95cf-634d5c2c651c",
+      "from": "856cf20c-d3bc-4d12-b93d-5063951dd0f0",
+      "to": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "content": "dqw",
+      "fileUrl": null,
+      "timestamp": 1748121236130
+    },
+    {
+      "id": "4efde62e-813c-4546-ac1a-58e20ddcf688",
+      "from": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "to": "856cf20c-d3bc-4d12-b93d-5063951dd0f0",
+      "content": "dqwdq",
+      "fileUrl": null,
+      "timestamp": 1748121238432
+    },
+    {
+      "id": "b61a586d-c25c-4ad3-865c-b267c38d6b5b",
+      "from": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "to": "856cf20c-d3bc-4d12-b93d-5063951dd0f0",
+      "content": "Fayl yuborildi",
+      "fileUrl": "/files/1748121246523-512018811.png",
+      "timestamp": 1748121246530
+    },
+    {
+      "id": "333ce564-ac48-46f9-9cce-62b7ed15c0aa",
+      "from": "856cf20c-d3bc-4d12-b93d-5063951dd0f0",
+      "to": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "content": "qwqd",
+      "fileUrl": null,
+      "timestamp": 1748121278067
+    },
+    {
+      "id": "c14b7790-9a02-4605-a296-f68ee2e2ada5",
+      "from": "856cf20c-d3bc-4d12-b93d-5063951dd0f0",
+      "to": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "content": "qwdqd",
+      "fileUrl": null,
+      "timestamp": 1748121279290
+    },
+    {
+      "id": "e66f6e39-eb54-4e71-b391-b5d2d7427883",
+      "from": "856cf20c-d3bc-4d12-b93d-5063951dd0f0",
+      "to": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "content": "Fayl yuborildi",
+      "fileUrl": "/files/1748121286329-219457534.JPG",
+      "timestamp": 1748121286373
+    },
+    {
+      "id": "afab1df7-5e96-416a-8666-b427e87d55d1",
+      "from": "6a8cceb5-46b0-4478-b6ad-d191df692cf0",
+      "to": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "content": "salom",
+      "fileUrl": null,
+      "timestamp": 1748164839422
+    },
+    {
+      "id": "c2b93b24-0bfd-4e5a-a152-112750e74085",
+      "from": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "to": "6a8cceb5-46b0-4478-b6ad-d191df692cf0",
+      "content": "salom",
+      "fileUrl": "/files/1748164859575-425746327.png",
+      "timestamp": 1748164859579
+    },
+    {
+      "id": "9bb005e0-7abe-49a9-857d-021bd2ad3038",
+      "from": "6a8cceb5-46b0-4478-b6ad-d191df692cf0",
+      "to": "85e81077-3ab8-4c38-8c2a-0ae828754597",
+      "content": "Salom",
+      "fileUrl": null,
+      "timestamp": 1748164879922
+    }
+  ]
+}

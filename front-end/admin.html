@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Support</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f8fafc;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+    }
+
+    .admin-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .admin-avatar {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .main-container {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 300px;
+      background: white;
+      border-right: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      padding: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+      background: #f8fafc;
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    .users-list {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .user-item {
+      padding: 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .user-item:hover {
+      background: #f8fafc;
+    }
+
+    .user-item.active {
+      background: #eff6ff;
+      border-right: 3px solid #3b82f6;
+    }
+
+    .user-item-avatar {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .user-item-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .user-item-name {
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 0.25rem;
+    }
+
+    .user-item-email {
+      font-size: 0.8rem;
+      color: #64748b;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .user-item-status {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      flex-shrink: 0;
+    }
+
+    .chat-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: white;
+    }
+
+    .chat-header {
+      padding: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+      background: #f8fafc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-user-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .chat-user-avatar {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .chat-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .action-btn {
+      background: #e2e8f0;
+      border: none;
+      color: #64748b;
+      padding: 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .action-btn:hover {
+      background: #cbd5e1;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      max-height: calc(100vh - 250px);
+    }
+
+    .message {
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .message.sent {
+      flex-direction: row-reverse;
+    }
+
+    .message-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .message.sent .message-avatar {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      color: white;
+    }
+
+    .message.received .message-avatar {
+      background: #e2e8f0;
+      color: #64748b;
+    }
+
+    .message-content {
+      max-width: 70%;
+      padding: 0.75rem 1rem;
+      border-radius: 18px;
+      position: relative;
+    }
+
+    .message.sent .message-content {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      color: white;
+    }
+
+    .message.received .message-content {
+      background: #f1f5f9;
+      color: #334155;
+    }
+
+    .message-time {
+      font-size: 0.75rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+    }
+
+    .message-file {
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .message.received .message-file {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .chat-input {
+      padding: 1rem;
+      border-top: 1px solid #e2e8f0;
+      background: white;
+    }
+
+    .input-container {
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-end;
+    }
+
+    .message-input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 25px;
+      resize: none;
+      font-family: inherit;
+      font-size: 1rem;
+      max-height: 100px;
+      min-height: 44px;
+    }
+
+    .message-input:focus {
+      outline: none;
+      border-color: #059669;
+    }
+
+    .file-btn, .send-btn {
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: all 0.3s;
+    }
+
+    .file-btn {
+      background: #e2e8f0;
+      color: #64748b;
+    }
+
+    .send-btn {
+      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      color: white;
+    }
+
+    .empty-state {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #64748b;
+    }
+
+    .empty-state-content {
+      max-width: 300px;
+    }
+
+    .empty-state-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .logout-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .logout-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        height: 200px;
+      }
+
+      .users-list {
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden;
+      }
+
+      .user-item {
+        min-width: 200px;
+        border-right: 1px solid #f1f5f9;
+        border-bottom: none;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="header">
+  <div class="header-left">
+    <div class="logo">👨‍💼</div>
+    <div class="admin-info">
+      <div class="admin-avatar">👨‍💼</div>
+      <div>
+        <div id="adminName">Admin</div>
+        <div style="font-size: 0.8rem; opacity: 0.8;">Support Dashboard</div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <button class="logout-btn" onclick="logout()">Chiqish</button>
+  </div>
+</div>
+
+<div class="main-container">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <input type="text" class="search-box" placeholder="Foydalanuvchilarni qidirish..." id="searchUsers">
+    </div>
+    <div class="users-list" id="usersList">
+      <div style="padding: 2rem; text-align: center; color: #64748b;">
+        Foydalanuvchilar yuklanmoqda...
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-area">
+
+    <div id="chatContainer" style="flex: 1; display: flex; flex-direction: column;">
+      <div class="chat-header">
+        <div class="chat-user-info">
+          <div class="chat-user-avatar" id="chatUserAvatar">👤</div>
+          <div>
+            <div id="chatUserName">Foydalanuvchi</div>
+            <div style="font-size: 0.8rem; color: #64748b;" id="chatUserEmail">email@example.com</div>
+          </div>
+        </div>
+        <div class="chat-actions">
+          <button class="action-btn" onclick="refreshChat()" title="Yangilash">🔄</button>
+          <button class="action-btn" onclick="clearChat()" title="Chatni tozalash">🗑️</button>
+        </div>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <!-- Messages will be loaded here -->
+      </div>
+
+      <div class="chat-input">
+        <div class="input-container">
+          <input type="file" id="fileInput" style="display: none;" accept="image/*,application/pdf,.doc,.docx">
+          <button type="button" class="file-btn" onclick="document.getElementById('fileInput').click()">
+            📎
+          </button>
+          <textarea
+                  id="messageInput"
+                  class="message-input"
+                  placeholder="Xabaringizni yozing..."
+                  rows="1"
+          ></textarea>
+          <button type="button" class="send-btn" id="sendBtn" onclick="sendMessage()">
+            ➤
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentAdmin = null;
+  let selectedUser = null;
+  let users = [];
+  let messages = [];
+  let authToken = null;
+
+  // Check admin role and get profile
+  async function checkAdminProfile() {
+    const token = localStorage.getItem('authToken');
+
+    if (!token) {
+      window.location.href = 'index.html';
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/api/user/role', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+
+        if (userData.role !== 'admin') {
+          window.location.href = 'user.html';
+          return;
+        }
+
+        currentAdmin = userData;
+        authToken = token;
+        localStorage.setItem('currentUser', JSON.stringify(userData));
+
+        document.getElementById('adminName').textContent = userData.fullname || 'Admin';
+
+      } else {
+        // Token invalid
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('authToken');
+        window.location.href = 'index.html';
+      }
+    } catch (error) {
+      console.error('Error checking profile:', error);
+      window.location.href = 'index.html';
+    }
+  }
+
+  // Initialize page
+  window.addEventListener('load', async function() {
+    await checkAdminProfile();
+
+    if (currentAdmin && authToken) {
+      loadUsers();
+    }
+  });
+
+  // Load users from API
+  async function loadUsers() {
+    try {
+      const response = await fetch('http://localhost:5000/api/admin/users', {
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        users = await response.json();
+        renderUsers();
+      } else if (response.status === 401) {
+        // Token expired
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('authToken');
+        window.location.href = 'index.html';
+      } else {
+        console.error('Failed to load users');
+      }
+    } catch (error) {
+      console.error('Error loading users:', error);
+    }
+  }
+
+  // Render users list
+  function renderUsers() {
+    const usersList = document.getElementById('usersList');
+
+    if (users.length === 0) {
+      usersList.innerHTML = `
+                    <div style="padding: 2rem; text-align: center; color: #64748b;">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">👥</div>
+                        <div>Hali foydalanuvchilar yo'q</div>
+                    </div>
+                `;
+      return;
+    }
+
+    usersList.innerHTML = users.map(user => `
+                <div class="user-item" onclick="selectUser('${user.id}')">
+                    <div class="user-item-avatar">👤</div>
+                    <div class="user-item-info">
+                        <div class="user-item-name">${user.fullname || user.username}</div>
+                        <div class="user-item-email">${user.email}</div>
+                    </div>
+                    <div class="user-item-status"></div>
+                </div>
+            `).join('');
+  }
+
+  // Select user for chat
+  async function selectUser(userId) {
+    selectedUser = users.find(u => u.id == userId);
+
+    if (!selectedUser) return;
+
+    // Update UI
+    document.querySelectorAll('.user-item').forEach(item => {
+      item.classList.remove('active');
+    });
+    event.currentTarget.classList.add('active');
+
+
+
+    // Update chat header
+    document.getElementById('chatUserName').textContent = selectedUser.fullname || selectedUser.username;
+    document.getElementById('chatUserEmail').textContent = selectedUser.email;
+
+    // Load messages
+    await loadMessages(userId);
+  }
+
+  // Load messages for selected user
+  async function loadMessages(userId) {
+    try {
+      const response = await fetch(`http://localhost:5000/api/admin/messages/${userId}`, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        messages = await response.json();
+        renderMessages();
+      } else if (response.status === 401) {
+        // Token expired
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('authToken');
+        window.location.href = 'index.html';
+      } else {
+        console.error('Failed to load messages');
+      }
+    } catch (error) {
+      console.error('Error loading messages:', error);
+    }
+  }
+
+  // Render messages
+  function renderMessages() {
+    const chatMessages = document.getElementById('chatMessages');
+
+    if (messages.length === 0) {
+      chatMessages.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #64748b;">
+                        <div style="font-size: 2rem; margin-bottom: 1rem;">💬</div>
+                        <div>Hali xabarlar yo'q</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem;">Birinchi xabarni yuboring!</div>
+                    </div>
+                `;
+      return;
+    }
+
+    chatMessages.innerHTML = messages.map(message => {
+      const isSent = message.from === 'admin' || message.from === currentAdmin.id;
+      const time = new Date(message.timestamp).toLocaleTimeString('uz-UZ', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      return `
+                    <div class="message ${isSent ? 'sent' : 'received'}">
+                        <div class="message-avatar">
+                            ${isSent ? '👨‍💼' : '👤'}
+                        </div>
+                        <div class="message-content">
+                            <div>${message.content}</div>
+                            ${message.fileUrl ? `
+                                <div class="message-file">
+                                    <span style="font-size: 1.2rem;">📎</span>
+                                    <a href="http://localhost:5000${message.fileUrl}" target="_blank" style="color: inherit; text-decoration: none; font-size: 0.9rem;">
+                                        Fayl ko'rish
+                                    </a>
+                                </div>
+                            ` : ''}
+                            <div class="message-time">${time}</div>
+                        </div>
+                    </div>
+                `;
+    }).join('');
+
+    // Scroll to bottom
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  // Send message
+  async function sendMessage() {
+    if (!selectedUser) return;
+
+    const messageInput = document.getElementById('messageInput');
+    const fileInput = document.getElementById('fileInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    const content = messageInput.value.trim();
+    const file = fileInput.files[0];
+
+    if (!content && !file) return;
+
+    try {
+      sendBtn.disabled = true;
+      sendBtn.innerHTML = '⏳';
+
+      // Create FormData for file upload with message
+      const formData = new FormData();
+      formData.append('content', content || 'Fayl yuborildi');
+
+      if (file) {
+        formData.append('file', file);
+      }
+
+      const response = await fetch(`http://localhost:5000/api/admin/messages/${selectedUser.id}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+          // Don't set Content-Type, let browser set it for FormData
+        },
+        body: formData
+      });
+
+      if (response.ok) {
+        // Clear inputs
+        messageInput.value = '';
+        fileInput.value = '';
+
+        // Reload messages
+        await loadMessages(selectedUser.id);
+      } else if (response.status === 401) {
+        // Token expired
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('authToken');
+        window.location.href = 'index.html';
+      } else {
+        const errorData = await response.json();
+        alert(errorData.message || 'Xabar yuborishda xatolik yuz berdi!');
+      }
+
+    } catch (error) {
+      console.error('Error sending message:', error);
+      alert('Xabar yuborishda xatolik yuz berdi!');
+    } finally {
+      sendBtn.disabled = false;
+      sendBtn.innerHTML = '➤';
+    }
+  }
+
+  // Refresh chat
+  async function refreshChat() {
+    if (selectedUser) {
+      await loadMessages(selectedUser.id);
+    }
+  }
+
+  // Clear chat - This would need a backend endpoint
+  function clearChat() {
+    if (!selectedUser) return;
+
+    if (confirm('Rostdan ham bu foydalanuvchi bilan barcha xabarlarni o\'chirmoqchimisiz?')) {
+      // You would need to implement a DELETE endpoint for this
+      alert('Bu funksiya backend da DELETE endpoint kerak!');
+    }
+  }
+
+  // Search users
+  document.getElementById('searchUsers').addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    const filteredUsers = users.filter(user =>
+            (user.fullname || user.username).toLowerCase().includes(searchTerm) ||
+            user.email.toLowerCase().includes(searchTerm)
+    );
+
+    const usersList = document.getElementById('usersList');
+    usersList.innerHTML = filteredUsers.map(user => `
+                <div class="user-item" onclick="selectUser('${user.id}')">
+                    <div class="user-item-avatar">👤</div>
+                    <div class="user-item-info">
+                        <div class="user-item-name">${user.fullname || user.username}</div>
+                        <div class="user-item-email">${user.email}</div>
+                    </div>
+                    <div class="user-item-status"></div>
+                </div>
+            `).join('');
+  });
+
+  // Handle Enter key
+  document.getElementById('messageInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  // Auto-resize textarea
+  document.getElementById('messageInput').addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+  });
+
+  // Logout function
+  function logout() {
+    if (confirm('Rostdan ham tizimdan chiqmoqchimisiz?')) {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('authToken');
+      window.location.href = 'index.html';
+    }
+  }
+</script>
+</body>
+</html>

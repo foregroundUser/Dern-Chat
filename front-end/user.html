@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Chat - Support</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f8fafc;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .header-right {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .refresh-btn, .logout-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .refresh-btn:hover, .logout-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+      background: white;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .chat-header {
+      background: #f8fafc;
+      padding: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+      text-align: center;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      max-height: calc(100vh - 200px);
+    }
+
+    .message {
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .message.sent {
+      flex-direction: row-reverse;
+    }
+
+    .message-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .message.sent .message-avatar {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: white;
+    }
+
+    .message.received .message-avatar {
+      background: #e2e8f0;
+      color: #64748b;
+    }
+
+    .message-content {
+      max-width: 70%;
+      padding: 0.75rem 1rem;
+      border-radius: 18px;
+      position: relative;
+    }
+
+    .message.sent .message-content {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: white;
+    }
+
+    .message.received .message-content {
+      background: #f1f5f9;
+      color: #334155;
+    }
+
+    .message-time {
+      font-size: 0.75rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+    }
+
+    .message-file {
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .message.received .message-file {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .file-icon {
+      font-size: 1.2rem;
+    }
+
+    .file-link {
+      color: inherit;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .chat-input {
+      padding: 1rem;
+      border-top: 1px solid #e2e8f0;
+      background: white;
+    }
+
+    .input-container {
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-end;
+    }
+
+    .message-input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 25px;
+      resize: none;
+      font-family: inherit;
+      font-size: 1rem;
+      max-height: 100px;
+      min-height: 44px;
+    }
+
+    .message-input:focus {
+      outline: none;
+      border-color: #4f46e5;
+    }
+
+    .file-input-container {
+      position: relative;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .file-btn, .send-btn {
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: all 0.3s;
+    }
+
+    .file-btn {
+      background: #e2e8f0;
+      color: #64748b;
+    }
+
+    .file-btn:hover {
+      background: #cbd5e1;
+    }
+
+    .send-btn {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: white;
+    }
+
+    .send-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .send-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: #64748b;
+    }
+
+    .empty-chat {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: #64748b;
+    }
+
+    .empty-chat-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .typing-indicator {
+      display: none;
+      padding: 0.5rem 1rem;
+      color: #64748b;
+      font-style: italic;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        padding: 1rem;
+      }
+
+      .chat-container {
+        margin: 0;
+        height: calc(100vh - 80px);
+      }
+
+      .message-content {
+        max-width: 85%;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="header">
+  <div class="header-left">
+    <div class="logo">🎧</div>
+    <div class="user-info">
+      <div class="user-avatar">👤</div>
+      <div>
+        <div id="userName">Foydalanuvchi</div>
+        <div style="font-size: 0.8rem; opacity: 0.8;">Online</div>
+      </div>
+    </div>
+  </div>
+  <div class="header-right">
+    <button class="refresh-btn" onclick="loadMessages()">🔄 Yangilash</button>
+    <button class="logout-btn" onclick="logout()">Chiqish</button>
+  </div>
+</div>
+
+<div class="chat-container">
+  <div class="chat-header">
+    <h3>Support Chat</h3>
+    <p>Admin bilan muloqot qiling</p>
+  </div>
+
+  <div class="chat-messages" id="chatMessages">
+    <div class="loading" id="loadingMessages">
+      <div>Xabarlar yuklanmoqda...</div>
+    </div>
+  </div>
+
+  <div class="typing-indicator" id="typingIndicator">
+    Admin yozmoqda...
+  </div>
+
+  <div class="chat-input">
+    <div class="input-container">
+      <div class="file-input-container">
+        <input type="file" id="fileInput" class="file-input" accept="image/*,application/pdf,.doc,.docx">
+        <button type="button" class="file-btn" onclick="document.getElementById('fileInput').click()">
+          📎
+        </button>
+      </div>
+      <textarea
+              id="messageInput"
+              class="message-input"
+              placeholder="Xabaringizni yozing..."
+              rows="1"
+      ></textarea>
+      <button type="button" class="send-btn" id="sendBtn" onclick="sendMessage()">
+        ➤
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentUser = null;
+  let messages = [];
+  let isLoading = false;
+  let authToken = null;
+
+  // Check user role and get profile
+  async function checkUserProfile() {
+    const token = localStorage.getItem('authToken');
+
+    if (!token) {
+      window.location.href = 'index.html';
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/api/user/role', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+
+        if (userData.role !== 'user') {
+          window.location.href = 'admin.html';
+          return;
+        }
+
+        currentUser = userData;
+        authToken = token;
+        localStorage.setItem('currentUser', JSON.stringify(userData));
+
+        document.getElementById('userName').textContent = userData.fullname || 'Foydalanuvchi';
+
+      } else {
+        // Token invalid
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('authToken');
+        window.location.href = 'index.html';
+      }
+    } catch (error) {
+      console.error('Error checking profile:', error);
+      window.location.href = 'index.html';
+    }
+  }
+
+  // Initialize page
+  window.addEventListener('load', async function() {
+    await checkUserProfile();
+
+    if (currentUser && authToken) {
+      loadMessages();
+      // Auto refresh every 5 seconds
+      setInterval(loadMessages, 5000);
+    }
+  });
+
+  // Load messages from API
+  async function loadMessages() {
+    if (isLoading) return;
+
+    try {
+      isLoading = true;
+
+      const response = await fetch('http://localhost:5000/api/user/messages', {
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        messages = await response.json();
+        renderMessages();
+      } else if (response.status === 401) {
+        // Token expired, redirect to login
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('authToken');
+        window.location.href = 'index.html';
+      } else {
+        console.error('Failed to load messages');
+      }
+    } catch (error) {
+      console.error('Error loading messages:', error);
+    } finally {
+      isLoading = false;
+      document.getElementById('loadingMessages').style.display = 'none';
+    }
+  }
+
+  // Render messages in chat
+  function renderMessages() {
+    const chatMessages = document.getElementById('chatMessages');
+
+    if (messages.length === 0) {
+      chatMessages.innerHTML = `
+                    <div class="empty-chat">
+                        <div class="empty-chat-icon">💬</div>
+                        <h3>Hali xabarlar yo'q</h3>
+                        <p>Admin bilan suhbatni boshlang!</p>
+                    </div>
+                `;
+      return;
+    }
+
+    chatMessages.innerHTML = messages.map(message => {
+      const isSent = message.from === currentUser.id;
+      const time = new Date(message.timestamp).toLocaleTimeString('uz-UZ', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      return `
+                    <div class="message ${isSent ? 'sent' : 'received'}">
+                        <div class="message-avatar">
+                            ${isSent ? '👤' : '👨‍💼'}
+                        </div>
+                        <div class="message-content">
+                            <div>${message.content}</div>
+                            ${message.fileUrl ? `
+                                <div class="message-file">
+                                    <span class="file-icon">📎</span>
+                                    <a href="http://localhost:5000${message.fileUrl}" target="_blank" class="file-link">
+                                        Fayl ko'rish
+                                    </a>
+                                </div>
+                            ` : ''}
+                            <div class="message-time">${time}</div>
+                        </div>
+                    </div>
+                `;
+    }).join('');
+
+    // Scroll to bottom
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  // Send message
+  async function sendMessage() {
+    const messageInput = document.getElementById('messageInput');
+    const fileInput = document.getElementById('fileInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    const content = messageInput.value.trim();
+    const file = fileInput.files[0];
+
+    if (!content && !file) return;
+
+    try {
+      sendBtn.disabled = true;
+      sendBtn.innerHTML = '⏳';
+
+      // Create FormData for file upload with message
+      const formData = new FormData();
+      formData.append('content', content || 'Fayl yuborildi');
+
+      if (file) {
+        formData.append('file', file);
+      }
+
+      const response = await fetch('http://localhost:5000/api/user/messages', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+          // Don't set Content-Type, let browser set it for FormData
+        },
+        body: formData
+      });
+
+      if (response.ok) {
+        // Clear inputs
+        messageInput.value = '';
+        fileInput.value = '';
+        document.getElementById('messageInput').placeholder = 'Xabaringizni yozing...';
+
+        // Reload messages
+        await loadMessages();
+      } else if (response.status === 401) {
+        // Token expired
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('authToken');
+        window.location.href = 'index.html';
+      } else {
+      }
+
+    } catch (error) {
+      console.error('Error sending message:', error);
+    } finally {
+      sendBtn.disabled = false;
+      sendBtn.innerHTML = '➤';
+    }
+  }
+
+  // Handle Enter key
+  document.getElementById('messageInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  // Auto-resize textarea
+  document.getElementById('messageInput').addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+  });
+
+  // Logout function
+  function logout() {
+    if (confirm('Rostdan ham tizimdan chiqmoqchimisiz?')) {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('authToken');
+      window.location.href = 'index.html';
+    }
+  }
+
+  // File input change handler
+  document.getElementById('fileInput').addEventListener('change', function() {
+    if (this.files[0]) {
+      const fileName = this.files[0].name;
+      document.getElementById('messageInput').placeholder = `Fayl tanlandi: ${fileName}`;
+    } else {
+      document.getElementById('messageInput').placeholder = 'Xabaringizni yozing...';
+    }
+  });
+</script>
+</body>
+</html>
